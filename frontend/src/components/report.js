@@ -319,7 +319,7 @@ const Report = (props) => {
               <Typography
                 variant='button'
                 style={{
-                  background: '#213065',
+                  background: '#ffb347',
                   color: '#fff',
                   borderRadius: '5px',
                   width: '180px',
