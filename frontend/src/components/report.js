@@ -277,6 +277,10 @@ const Report = (props) => {
 
   const images = importAll(require.context('../images', false, /\.(png|jpe?g|svg)$/));
 
+  function isMajor(label) {
+    return label === 'major accident';
+  }
+
   return (
     <Card>
       <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -302,20 +306,37 @@ const Report = (props) => {
         {props.predictionLabel !== '' && (
           <Grid container direction='column' className={classes.textGrid}>
             <Grid container direction='row' style={{ justifyContent: 'flex-start', marginBottom: '20px' }}>
-              <Typography
-                variant='button'
-                style={{
-                  background: '#213065',
-                  color: '#fff',
-                  borderRadius: '5px',
-                  width: '180px',
-                  textAlign: 'center',
-                  marginRight: '10px',
-                  padding: '4px',
-                }}
-              >
-                {props.predictionLabel}
-              </Typography>
+              {isMajor(props.predictionLabel) ? (
+                <Typography
+                  variant='button'
+                  style={{
+                    background: '#ff1206',
+                    color: '#fff',
+                    borderRadius: '5px',
+                    width: '180px',
+                    textAlign: 'center',
+                    marginRight: '10px',
+                    padding: '4px',
+                  }}
+                >
+                  {props.predictionLabel}
+                </Typography>
+              ) : (
+                <Typography
+                  variant='button'
+                  style={{
+                    background: '#fdfd96',
+                    color: '#000',
+                    borderRadius: '5px',
+                    width: '180px',
+                    textAlign: 'center',
+                    marginRight: '10px',
+                    padding: '4px',
+                  }}
+                >
+                  {props.predictionLabel}
+                </Typography>
+              )}
               <Typography
                 variant='button'
                 style={{
