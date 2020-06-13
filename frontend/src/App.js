@@ -3,9 +3,10 @@ import './App.css';
 
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route, Link, withRouter, Redirect } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
-import Test from './containers/test';
+import Past from './containers/past';
+import Current from './containers/current';
 import Sidebar from './components/sidebar';
 import Topbar from './components/topbar';
 
@@ -84,24 +85,20 @@ const App = (props) => {
     <Provider store={store}>
       <div className={classes.root}>
         <CssBaseline />
-        {pathname === '/login' ? '' : <Topbar handleDrawerToggle={handleDrawerToggle} pathname={pathname} />}
-        {pathname === '/login' || pathname === '/logout' ? (
-          <></>
-        ) : (
-          <nav className={classes.drawer} aria-label='mailbox folders'>
-            <Sidebar
-              handleDrawerToggle={handleDrawerToggle}
-              mobileOpen={mobileOpen}
-              handleSelectedItem={handleSelectedItem}
-              selectedItem={selectedItem}
-            />
-          </nav>
-        )}
+        <Topbar handleDrawerToggle={handleDrawerToggle} pathname={pathname} />
+        <nav className={classes.drawer} aria-label='mailbox folders'>
+          <Sidebar
+            handleDrawerToggle={handleDrawerToggle}
+            mobileOpen={mobileOpen}
+            handleSelectedItem={handleSelectedItem}
+            selectedItem={selectedItem}
+          />
+        </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route exact path='/current' component={Test}></Route>
-            <Route exact path='/past' component={Test}></Route>
+            <Route exact path='/current' component={Current}></Route>
+            <Route exact path='/past' component={Past}></Route>
             <Redirect from='/' to={'current'} />
           </Switch>
         </main>

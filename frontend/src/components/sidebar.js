@@ -9,17 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import { makeStyles, useTheme, createMuiTheme } from '@material-ui/core/styles';
-import TelegramIcon from '@material-ui/icons/Telegram';
-import MessageIcon from '@material-ui/icons/Message';
-import PersonIcon from '@material-ui/icons/Person';
-import HomeIcon from '@material-ui/icons/Home';
-import MotorcycleIcon from '@material-ui/icons/Motorcycle';
-import RestaurantIcon from '@material-ui/icons/Restaurant';
-import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
 import { ThemeProvider } from '@material-ui/styles';
-import { Redirect } from 'react-router-dom';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({

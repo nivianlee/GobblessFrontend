@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Topbar = (props) => {
   const classes = useStyles();
-  const { handleDrawerToggle, handleLogout, handleProfile, pathname } = props;
+  const { handleDrawerToggle } = props;
 
   return (
-    <AppBar position='fixed' className={classes.appBar} style={{ backgroundColor: '#ff3008' }}>
+    <AppBar position='fixed' className={classes.appBar} style={{ backgroundColor: '#213065' }}>
       <Toolbar>
         <IconButton
           color='inherit'
@@ -42,7 +42,7 @@ const Topbar = (props) => {
         <Grid container style={{ display: 'flex', direction: 'row', justifyContent: 'space-between' }}>
           <Grid item>
             <Typography variant='h6' className={classes.header}>
-              Gobbless...
+              SCDF
             </Typography>
           </Grid>
         </Grid>
