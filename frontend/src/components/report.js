@@ -107,13 +107,13 @@ const Report = (props) => {
   const [report, setReport] = useState({});
 
   useEffect(() => {
-    if (props.selectedImage === 2) {
+    if (props.selectedImage === 1) {
       setReport(reports[0]);
     }
-    if (props.selectedImage === 3) {
+    if (props.selectedImage === 2) {
       setReport(reports[1]);
     }
-    if (props.selectedImage === 4) {
+    if (props.selectedImage === 3) {
       setReport(reports[2]);
     }
   }, [props.selectedImage, props.predictionLabel]);
@@ -243,10 +243,14 @@ const Report = (props) => {
       .forEach((prediction, i) => {
         //const label = `${prediction.label} ${(prediction.score * 100).toFixed(1)}%`;
         const label = 'Analysed';
-        props.dispatch({
-          type: 'SET_PREDICTION_LABEL',
-          data: prediction.label,
-        });
+        console.log(prediction.label);
+        if (prediction.label !== '') {
+          props.dispatch({
+            type: 'SET_PREDICTION_LABEL',
+            data: prediction.label,
+          });
+        }
+
         // Draw the label background.
         ctx.setFillStyle('#0062ff');
         const textWidth = ctx.measureText(label).width;
@@ -290,10 +294,12 @@ const Report = (props) => {
   }, [model, resultsCanvas]); // if model changes kill preview.
 
   useEffect(() => {
-    props.dispatch({
-      type: 'SET_SELECTED_IMAGE',
-      data: props.selectedImage + 1,
-    });
+    if (props.predictionLabel !== '') {
+      props.dispatch({
+        type: 'SET_SELECTED_IMAGE',
+        data: props.selectedImage + 1,
+      });
+    }
   }, [props.predictionLabel]);
 
   const onDrop = useCallback((accepted, _, links) => {
@@ -422,7 +428,7 @@ const Report = (props) => {
                 <img alt='upload preview' onLoad={onImageChange} className={styles.image} src={preview} />
               </div>
             ) : model !== undefined ? (
-              'Drag & Drop an Image to Test'
+              'Drag and drop an image to test'
             ) : (
               'Loading model...'
             )}
@@ -571,10 +577,26 @@ const Report = (props) => {
             <Typography gutterBottom> Has this report been resolved? </Typography>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleCloseResYes} color='primary'>
+            <Button
+              autoFocus
+              onClick={() => {
+                handleCloseResYes();
+                setNotification('Success! Report has been updated to resolved');
+                showNotification();
+              }}
+              color='primary'
+            >
               Yes
             </Button>
-            <Button autoFocus onClick={handleCloseRes} color='primary'>
+            <Button
+              autoFocus
+              onClick={() => {
+                handleCloseRes();
+                setNotification('Cancelled. Report remains unresolved');
+                showNotification();
+              }}
+              color='primary'
+            >
               No
             </Button>
           </DialogActions>
@@ -623,10 +645,26 @@ const Report = (props) => {
           <Typography gutterBottom> Has this report been resolved? </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleCloseResYes} color='primary'>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleCloseResYes();
+              setNotification('Success! Report has been updated to resolved');
+              showNotification();
+            }}
+            color='primary'
+          >
             Yes
           </Button>
-          <Button autoFocus onClick={handleCloseRes} color='primary'>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleCloseRes();
+              setNotification('Cancelled. Report remains unresolved');
+              showNotification();
+            }}
+            color='primary'
+          >
             No
           </Button>
         </DialogActions>

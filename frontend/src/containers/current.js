@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
 import Report from '../components/report';
@@ -65,19 +63,19 @@ const Current = (props) => {
 
   return (
     <Grid container direction='row' className={classes.card} spacing={2}>
-      <Grid item xs={12} sm={12} md={6} lg={6}>
+      <Grid item xs={12} sm={12} md={4} lg={4}>
         <Typography variant='h5' style={{ marginBottom: '10px' }}>
           Report
         </Typography>
         <Report />
       </Grid>
-      <Grid item xs={12} sm={12} md={6} lg={6}>
+      <Grid item xs={12} sm={12} md={8} lg={8}>
         <Grid container direction='column'>
           <Typography variant='h5' style={{ marginBottom: '10px' }}>
             Respondents
           </Typography>
-          <Respondent />
         </Grid>
+        <Respondent />
       </Grid>
     </Grid>
   );
