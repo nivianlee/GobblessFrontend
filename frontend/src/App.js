@@ -61,9 +61,6 @@ const App = (props) => {
     if (pathname === '/current') {
       setSelectedItem(0);
     }
-    if (pathname === '/past') {
-      setSelectedItem(1);
-    }
   }, [props.history.location.pathname]);
 
   const handleDrawerToggle = () => {
@@ -72,12 +69,8 @@ const App = (props) => {
 
   const handleSelectedItem = (event, index) => {
     setSelectedItem(index);
-
     if (index === 0) {
       props.history.push('/current');
-    }
-    if (index === 1) {
-      props.history.push('/past');
     }
   };
 
@@ -98,7 +91,6 @@ const App = (props) => {
           <div className={classes.toolbar} />
           <Switch>
             <Route exact path='/current' component={Current}></Route>
-            <Route exact path='/past' component={Past}></Route>
             <Redirect from='/' to={'current'} />
           </Switch>
         </main>

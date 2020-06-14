@@ -87,6 +87,8 @@ const Report = (props) => {
   const [resultsCanvas, setResultsCanvas] = useState(undefined);
   const [openRes, setOpenRes] = useState(false);
   const [openAcc, setOpenAcc] = useState(false);
+  const [openEm, setOpenEm] = useState(false);
+  const [emMessage, setEmMessage] = useState('Accident at ');
 
   const getRetinaContext = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -335,6 +337,13 @@ const Report = (props) => {
     setOpenRes(false);
   };
 
+  const handleClickOpenEm = () => {
+    setOpenEm(true);
+  };
+  const handleCloseEm = () => {
+    setOpenEm(false);
+  };
+
   return (
     <Card>
       <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -415,17 +424,47 @@ const Report = (props) => {
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
               <TextField
                 id='standard-full-width'
-                name='foodItemName'
+                name='Emergency Message'
                 fullWidth
-                label='Food Item Name'
-                helperText='Proper casing preferred e.g. Fried Rice'
-                //value={foodItem.foodItemName}
-                //onChange={(event) => setFoodItem({ ...foodItem, [event.target.name]: event.target.value })}
+                label='Emergency Message'
+                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a Lane 4'
+                value={emMessage}
+                onChange={(event) => setEmMessage(event.target.value)}
               />
+              <Button onClick={handleClickOpenEm} color='primary'>
+                Send message
+              </Button>
             </Grid>
           </Grid>
         )}
       </Grid>
+      <Dialog onClose={handleCloseEm} aria-labelledby='customized-dialog-title' open={openEm}>
+        <DialogTitle id='customized-dialog-title' onClose={handleCloseEm}>
+          Modal title
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget
+            quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+          </Typography>
+          <Typography gutterBottom>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet
+            rutrum faucibus dolor auctor.
+          </Typography>
+          <Typography gutterBottom>
+            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+            consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleCloseEm} color='primary'>
+            Cancel
+          </Button>
+          <Button autoFocus onClick={handleCloseEm} color='primary'>
+            Save changes
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog onClose={handleCloseRes} aria-labelledby='customized-dialog-title' open={openRes}>
         <DialogTitle id='customized-dialog-title' onClose={handleCloseRes}>
           Modal title
