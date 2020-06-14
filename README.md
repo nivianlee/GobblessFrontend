@@ -20,6 +20,8 @@ We look to address the third problem statement – integrating with a smart envi
 https://docs.google.com/document/d/1cRGRzNGBly48C97SJTVLKkjmCJCdCCC8caF56TT-8L4/edit?usp=sharing
 
 ### Getting Started
+1. Clone the repo into your local.
+2. Run npm i in the directory containing package.json
 
 ### Live Demo
 
