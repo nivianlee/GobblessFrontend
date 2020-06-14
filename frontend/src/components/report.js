@@ -107,7 +107,6 @@ const Report = (props) => {
   const [report, setReport] = useState({});
 
   useEffect(() => {
-    console.log(reports[0]);
     if (props.selectedImage === 2) {
       setReport(reports[0]);
     }
@@ -400,6 +399,7 @@ const Report = (props) => {
       data: event.target.value,
     });
   };
+
   const showNotification = () => {
     setBC(true);
     setTimeout(function () {
@@ -442,7 +442,6 @@ const Report = (props) => {
                     width: '180px',
                     textAlign: 'center',
                     marginRight: '10px',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenAcc()}
                 >
@@ -458,7 +457,6 @@ const Report = (props) => {
                     width: '180px',
                     textAlign: 'center',
                     marginRight: '10px',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenAcc()}
                 >
@@ -474,7 +472,6 @@ const Report = (props) => {
                     borderRadius: '5px',
                     width: '180px',
                     textAlign: 'center',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenRes()}
                   disabled={true}
@@ -490,7 +487,6 @@ const Report = (props) => {
                     borderRadius: '5px',
                     width: '180px',
                     textAlign: 'center',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenRes()}
                 >
@@ -499,20 +495,22 @@ const Report = (props) => {
               )}
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='h6'>{report.date}</Typography>
+              <Typography variant='h6'>Date: {report.date}</Typography>
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='body1'>{report.location}</Typography>
+              <Typography variant='body1'>Location: {report.location}</Typography>
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
               <Divider />
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+                <Typography variant='h6'>Emergency Message</Typography>
+              </Grid>
               <TextField
                 id='standard-full-width'
                 name='Emergency Message'
                 fullWidth
-                label='Emergency Message'
                 helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a Lane 4'
                 value={emMessage}
                 onChange={(event) => setEmMessage(event.target.value)}
@@ -530,7 +528,7 @@ const Report = (props) => {
       </Grid>
       {accident ? (
         <Dialog
-          fullWidth='sm'
+          fullWidth
           maxWidth='sm'
           onClose={handleCloseAcc}
           aria-labelledby='customized-dialog-title'
@@ -560,7 +558,7 @@ const Report = (props) => {
         </Dialog>
       ) : (
         <Dialog
-          fullWidth='sm'
+          fullWidth
           maxWidth='sm'
           onClose={handleCloseRes}
           aria-labelledby='customized-dialog-title'
