@@ -87,6 +87,7 @@ const Report = (props) => {
   const [resultsCanvas, setResultsCanvas] = useState(undefined);
   const [openRes, setOpenRes] = useState(false);
   const [openAcc, setOpenAcc] = useState(false);
+  const [resolved, setResolved] = useState(false);
 
   const getRetinaContext = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -331,8 +332,14 @@ const Report = (props) => {
   const handleClickOpenRes = () => {
     setOpenRes(true);
   };
+
   const handleCloseRes = () => {
     setOpenRes(false);
+  };
+
+  const handleCloseResYes = () => {
+    setOpenRes(false);
+    setResolved(true);
   };
 
   return (
@@ -391,20 +398,38 @@ const Report = (props) => {
                   {props.predictionLabel}
                 </Typography>
               )}
-              <Button
-                variant='contained'
-                style={{
-                  background: '#ffb347',
-                  color: '#fff',
-                  borderRadius: '5px',
-                  width: '180px',
-                  textAlign: 'center',
-                  padding: '4px',
-                }}
-                onClick={() => handleClickOpenRes()}
-              >
-                Unresolved
-              </Button>
+              {resolved ? (
+                <Button
+                  variant='contained'
+                  style={{
+                    background: '#77dd77',
+                    color: '#fff',
+                    borderRadius: '5px',
+                    width: '180px',
+                    textAlign: 'center',
+                    padding: '4px',
+                  }}
+                  onClick={() => handleClickOpenRes()}
+                  disabled={true}
+                >
+                  Resolved
+                </Button>
+              ) : (
+                <Button
+                  variant='contained'
+                  style={{
+                    background: '#ffb347',
+                    color: '#fff',
+                    borderRadius: '5px',
+                    width: '180px',
+                    textAlign: 'center',
+                    padding: '4px',
+                  }}
+                  onClick={() => handleClickOpenRes()}
+                >
+                  Unresolved
+                </Button>
+              )}
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
               <Typography variant='h6'>Date</Typography>
@@ -426,27 +451,25 @@ const Report = (props) => {
           </Grid>
         )}
       </Grid>
-      <Dialog onClose={handleCloseRes} aria-labelledby='customized-dialog-title' open={openRes}>
+      <Dialog
+        fullWidth='sm'
+        maxWidth='sm'
+        onClose={handleCloseRes}
+        aria-labelledby='customized-dialog-title'
+        open={openRes}
+      >
         <DialogTitle id='customized-dialog-title' onClose={handleCloseRes}>
-          Modal title
+          Resolve Report
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget
-            quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet
-            rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-            consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+          <Typography gutterBottom> Has this report been resolved? </Typography>
         </DialogContent>
         <DialogActions>
+          <Button autoFocus onClick={handleCloseResYes} color='primary'>
+            Yes
+          </Button>
           <Button autoFocus onClick={handleCloseRes} color='primary'>
-            Save changes
+            No
           </Button>
         </DialogActions>
       </Dialog>
