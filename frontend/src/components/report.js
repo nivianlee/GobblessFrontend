@@ -517,7 +517,7 @@ const Report = (props) => {
             autoFocus
             onClick={() => {
               handleCloseEm();
-              setNotification('Message has been broadcasted');
+              setNotification('Success! Message has been broadcasted');
               showNotification();
             }}
             color='primary'
@@ -528,7 +528,7 @@ const Report = (props) => {
             autoFocus
             onClick={() => {
               handleCloseEm();
-              setNotification('No message was broadcasted');
+              setNotification('Cancelled. No message was broadcasted');
               showNotification();
             }}
             color='primary'
