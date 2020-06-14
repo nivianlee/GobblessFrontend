@@ -11,7 +11,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -75,6 +74,17 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     backgroundColor: '#0000FF',
   },
+  inputRoot: {
+    marginTop: 20,
+    paddingTop: 20,
+  },
+  labelRoot: {
+    fontSize: 28,
+    fontWeight: 500,
+    color: 'black',
+    marginBottom: 20,
+  },
+  labelFocused: {},
 }));
 
 const dialogStyles = (theme) => ({
@@ -513,7 +523,16 @@ const Report = (props) => {
                 name='Emergency Message'
                 fullWidth
                 label='Emergency Message'
-                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a Lane 4'
+                InputProps={{
+                  classes: { root: classes.inputRoot },
+                }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.labelRoot,
+                    focused: classes.labelFocused,
+                  },
+                }}
+                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a, avoid Lane 4'
                 value={emMessage}
                 onChange={(event) => setEmMessage(event.target.value)}
               />
