@@ -492,24 +492,21 @@ const Report = (props) => {
           <FormControl
             component='fieldset'
             style={{
-              marginLeft: '50px',
+              marginLeft: '20px',
               marginBottom: '20px',
             }}
           >
-            <RadioGroup aria-label='accident severity' name='accident severity1' value={value} onChange={handleChange}>
+            <RadioGroup
+              aria-label='accident severity'
+              name='accident severity1'
+              value={props.predictionLabel}
+              onChange={handleChange}
+            >
               <FormControlLabel value='minor accident' control={<Radio />} label='Minor Accident' />
               <FormControlLabel value='major accident' control={<Radio />} label='Major Accident' />
               <FormControlLabel value='normal' control={<Radio />} label='Normal' />
             </RadioGroup>
           </FormControl>
-          {/* <DialogActions>
-            <Button autoFocus onClick={handleCloseAccYes(value)} color='primary'>
-              Submit
-            </Button>
-            <Button autoFocus onClick={handleCloseAcc} color='primary'>
-              Close
-            </Button>
-          </DialogActions> */}
         </Dialog>
       ) : (
         <Dialog
