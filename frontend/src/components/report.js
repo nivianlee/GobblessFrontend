@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     backgroundColor: '#0000FF',
   },
+}));
+
+const dialogStyles = (theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
@@ -75,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
-}));
+});
 
 const Report = (props) => {
   const classes = useStyles();
@@ -298,7 +301,7 @@ const Report = (props) => {
     return label === 'major accident';
   };
 
-  const DialogTitle = withStyles(styles)((props) => {
+  const DialogTitle = withStyles(dialogStyles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
       <MuiDialogTitle disableTypography className={classes.root} {...other}>
