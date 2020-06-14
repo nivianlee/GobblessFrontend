@@ -4,7 +4,7 @@
 2. Ling Zhi Yu
 3. Nivian Lee
 4. Andy Chan
-5. Ahan Gupta
+5. Aditya Gupta
 
 ### Short Description of the Problem
 We look to address the third problem statement – integrating with a smart environment. We will narrow our scope to reporting traffic incidents and we leverage technology to accomplish these three tasks: 
