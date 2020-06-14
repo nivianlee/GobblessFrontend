@@ -7,6 +7,11 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
@@ -88,6 +93,8 @@ const Report = (props) => {
   const [openRes, setOpenRes] = useState(false);
   const [openAcc, setOpenAcc] = useState(false);
   const [resolved, setResolved] = useState(false);
+  const [accident, setAccident] = useState(false);
+  const [value, setValue] = useState(undefined);
 
   const getRetinaContext = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -329,7 +336,17 @@ const Report = (props) => {
     },
   }))(MuiDialogActions);
 
+  const handleClickOpenAcc = () => {
+    setAccident(true);
+    setOpenAcc(true);
+  };
+
+  const handleCloseAcc = () => {
+    setOpenAcc(false);
+  };
+
   const handleClickOpenRes = () => {
+    setAccident(false);
     setOpenRes(true);
   };
 
@@ -340,6 +357,14 @@ const Report = (props) => {
   const handleCloseResYes = () => {
     setOpenRes(false);
     setResolved(true);
+  };
+
+  const handleChange = (event) => {
+    setOpenAcc(false);
+    props.dispatch({
+      type: 'SET_PREDICTION_LABEL',
+      data: event.target.value,
+    });
   };
 
   return (
@@ -368,8 +393,8 @@ const Report = (props) => {
           <Grid container direction='column' className={classes.textGrid}>
             <Grid container direction='row' style={{ justifyContent: 'flex-start', marginBottom: '20px' }}>
               {isMajor(props.predictionLabel) ? (
-                <Typography
-                  variant='button'
+                <Button
+                  variant='contained'
                   style={{
                     background: '#ff1206',
                     color: '#fff',
@@ -379,12 +404,13 @@ const Report = (props) => {
                     marginRight: '10px',
                     padding: '4px',
                   }}
+                  onClick={() => handleClickOpenAcc()}
                 >
                   {props.predictionLabel}
-                </Typography>
+                </Button>
               ) : (
-                <Typography
-                  variant='button'
+                <Button
+                  variant='contained'
                   style={{
                     background: '#fdfd96',
                     color: '#000',
@@ -394,9 +420,10 @@ const Report = (props) => {
                     marginRight: '10px',
                     padding: '4px',
                   }}
+                  onClick={() => handleClickOpenAcc()}
                 >
                   {props.predictionLabel}
-                </Typography>
+                </Button>
               )}
               {resolved ? (
                 <Button
@@ -451,28 +478,63 @@ const Report = (props) => {
           </Grid>
         )}
       </Grid>
-      <Dialog
-        fullWidth='sm'
-        maxWidth='sm'
-        onClose={handleCloseRes}
-        aria-labelledby='customized-dialog-title'
-        open={openRes}
-      >
-        <DialogTitle id='customized-dialog-title' onClose={handleCloseRes}>
-          Resolve Report
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom> Has this report been resolved? </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleCloseResYes} color='primary'>
-            Yes
-          </Button>
-          <Button autoFocus onClick={handleCloseRes} color='primary'>
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {accident ? (
+        <Dialog
+          fullWidth='sm'
+          maxWidth='sm'
+          onClose={handleCloseAcc}
+          aria-labelledby='customized-dialog-title'
+          open={openAcc}
+        >
+          <DialogTitle id='customized-dialog-title' onClose={handleCloseAcc}>
+            Reclassify Accident Severity
+          </DialogTitle>
+          <FormControl
+            component='fieldset'
+            style={{
+              marginLeft: '50px',
+              marginBottom: '20px',
+            }}
+          >
+            <RadioGroup aria-label='accident severity' name='accident severity1' value={value} onChange={handleChange}>
+              <FormControlLabel value='minor accident' control={<Radio />} label='Minor Accident' />
+              <FormControlLabel value='major accident' control={<Radio />} label='Major Accident' />
+              <FormControlLabel value='normal' control={<Radio />} label='Normal' />
+            </RadioGroup>
+          </FormControl>
+          {/* <DialogActions>
+            <Button autoFocus onClick={handleCloseAccYes(value)} color='primary'>
+              Submit
+            </Button>
+            <Button autoFocus onClick={handleCloseAcc} color='primary'>
+              Close
+            </Button>
+          </DialogActions> */}
+        </Dialog>
+      ) : (
+        <Dialog
+          fullWidth='sm'
+          maxWidth='sm'
+          onClose={handleCloseRes}
+          aria-labelledby='customized-dialog-title'
+          open={openRes}
+        >
+          <DialogTitle id='customized-dialog-title' onClose={handleCloseRes}>
+            Resolve Report
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom> Has this report been resolved? </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleCloseResYes} color='primary'>
+              Yes
+            </Button>
+            <Button autoFocus onClick={handleCloseRes} color='primary'>
+              No
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Card>
   );
 };
