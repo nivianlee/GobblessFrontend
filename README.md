@@ -15,7 +15,7 @@ We look to address the third problem statement – integrating with a smart envi
 ![alt Solution Workflow](https://github.com/nivianlee/GobblessFrontend/blob/master/frontend/src/images/Solution%20Workflow.png?raw=true)
 
 ### Pitch Video
-https://youtu.be/2ViZ-mP0yDQ
+https://youtu.be/0kt8ABtuPa8
 
 ### Architecture of the Proposed Solution
 ![alt Architecture](https://github.com/nivianlee/GobblessFrontend/blob/master/frontend/src/images/Architecture.png?raw=true)
