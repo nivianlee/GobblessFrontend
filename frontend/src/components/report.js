@@ -1,10 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import MagicDropzone from 'react-magic-dropzone';
 import models from '@cloud-annotations/models';
@@ -58,6 +65,16 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     backgroundColor: '#0000FF',
   },
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
 }));
 
 const Report = (props) => {
@@ -65,6 +82,8 @@ const Report = (props) => {
   const [model, setModel] = useState(undefined);
   const [preview, setPreview] = useState(undefined);
   const [resultsCanvas, setResultsCanvas] = useState(undefined);
+  const [openRes, setOpenRes] = useState(false);
+  const [openAcc, setOpenAcc] = useState(false);
 
   const getRetinaContext = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -275,36 +294,74 @@ const Report = (props) => {
 
   const images = importAll(require.context('../images', false, /\.(png|jpe?g|svg)$/));
 
+  const isMajor = (label) => {
+    return label === 'major accident';
+  };
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant='h6'>{children}</Typography>
+        {onClose ? (
+          <IconButton aria-label='close' className={classes.closeButton} onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogContent = withStyles((theme) => ({
+    root: {
+      padding: theme.spacing(2),
+    },
+  }))(MuiDialogContent);
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
+
+  const handleClickOpenRes = () => {
+    setOpenRes(true);
+  };
+  const handleCloseRes = () => {
+    setOpenRes(false);
+  };
+
   return (
-    <>
-      <Card>
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <div className={styles.wrapper}>
-            <MagicDropzone
-              className={styles.dropzone}
-              accept='image/jpeg, image/png, .jpg, .jpeg, .png'
-              multiple={false}
-              onDrop={onDrop}
-            >
-              {preview ? (
-                <div className={styles.imageWrapper}>
-                  <img alt='upload preview' onLoad={onImageChange} className={styles.image} src={preview} />
-                </div>
-              ) : model !== undefined ? (
-                'Drag & Drop an Image to Test'
-              ) : (
-                'Loading model...'
-              )}
-              <canvas ref={setResultsCanvas} className={styles.canvas} />
-            </MagicDropzone>
-          </div>
-          {props.predictionLabel !== '' && (
-            <Grid container direction='column' className={classes.textGrid}>
-              <Grid container direction='row' style={{ justifyContent: 'flex-start', marginBottom: '20px' }}>
+    <Card>
+      <Grid item xs={12} sm={12} md={12} lg={12}>
+        <div className={styles.wrapper}>
+          <MagicDropzone
+            className={styles.dropzone}
+            accept='image/jpeg, image/png, .jpg, .jpeg, .png'
+            multiple={false}
+            onDrop={onDrop}
+          >
+            {preview ? (
+              <div className={styles.imageWrapper}>
+                <img alt='upload preview' onLoad={onImageChange} className={styles.image} src={preview} />
+              </div>
+            ) : model !== undefined ? (
+              'Drag & Drop an Image to Test'
+            ) : (
+              'Loading model...'
+            )}
+            <canvas ref={setResultsCanvas} className={styles.canvas} />
+          </MagicDropzone>
+        </div>
+        {props.predictionLabel !== '' && (
+          <Grid container direction='column' className={classes.textGrid}>
+            <Grid container direction='row' style={{ justifyContent: 'flex-start', marginBottom: '20px' }}>
+              {isMajor(props.predictionLabel) ? (
                 <Typography
                   variant='button'
                   style={{
-                    background: '#213065',
+                    background: '#ff1206',
                     color: '#fff',
                     borderRadius: '5px',
                     width: '180px',
@@ -315,42 +372,82 @@ const Report = (props) => {
                 >
                   {props.predictionLabel}
                 </Typography>
+              ) : (
                 <Typography
                   variant='button'
                   style={{
-                    background: '#213065',
-                    color: '#fff',
+                    background: '#fdfd96',
+                    color: '#000',
                     borderRadius: '5px',
                     width: '180px',
                     textAlign: 'center',
+                    marginRight: '10px',
                     padding: '4px',
                   }}
                 >
-                  Unresolved
+                  {props.predictionLabel}
                 </Typography>
-              </Grid>
-              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-                <Typography variant='h6'>Date</Typography>
-              </Grid>
-              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-                <Typography variant='body1'>Location</Typography>
-              </Grid>
-              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-                <TextField
-                  id='standard-full-width'
-                  name='foodItemName'
-                  fullWidth
-                  label='Food Item Name'
-                  helperText='Proper casing preferred e.g. Fried Rice'
-                  //value={foodItem.foodItemName}
-                  //onChange={(event) => setFoodItem({ ...foodItem, [event.target.name]: event.target.value })}
-                />
-              </Grid>
+              )}
+              <Button
+                variant='contained'
+                style={{
+                  background: '#ffb347',
+                  color: '#fff',
+                  borderRadius: '5px',
+                  width: '180px',
+                  textAlign: 'center',
+                  padding: '4px',
+                }}
+                onClick={() => handleClickOpenRes()}
+              >
+                Unresolved
+              </Button>
             </Grid>
-          )}
-        </Grid>
-      </Card>
-    </>
+            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+              <Typography variant='h6'>Date</Typography>
+            </Grid>
+            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+              <Typography variant='body1'>Location</Typography>
+            </Grid>
+            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+              <TextField
+                id='standard-full-width'
+                name='foodItemName'
+                fullWidth
+                label='Food Item Name'
+                helperText='Proper casing preferred e.g. Fried Rice'
+                //value={foodItem.foodItemName}
+                //onChange={(event) => setFoodItem({ ...foodItem, [event.target.name]: event.target.value })}
+              />
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
+      <Dialog onClose={handleCloseRes} aria-labelledby='customized-dialog-title' open={openRes}>
+        <DialogTitle id='customized-dialog-title' onClose={handleCloseRes}>
+          Modal title
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget
+            quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+          </Typography>
+          <Typography gutterBottom>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet
+            rutrum faucibus dolor auctor.
+          </Typography>
+          <Typography gutterBottom>
+            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
+            consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleCloseRes} color='primary'>
+            Save changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Card>
   );
 };
 const mapStateToProps = (state) => ({
