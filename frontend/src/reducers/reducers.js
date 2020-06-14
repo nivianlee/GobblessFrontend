@@ -3,6 +3,7 @@ export function reducer(
     errorMessage: '',
     notifMessage: '',
     predictionLabel: '',
+    selectedImage: 1,
   },
   action
 ) {
@@ -21,6 +22,11 @@ export function reducer(
       return {
         ...state,
         predictionLabel: action.data,
+      };
+    case 'SET_SELECTED_IMAGE':
+      return {
+        ...state,
+        selectedImage: action.data,
       };
 
     default:

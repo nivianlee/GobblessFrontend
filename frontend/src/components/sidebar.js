@@ -56,8 +56,6 @@ const Sidebar = (props) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  console.log('here' + selectedItem);
-
   const drawer = (
     <div>
       <div className={classes.toolbar} />

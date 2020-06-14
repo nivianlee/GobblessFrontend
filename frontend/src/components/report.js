@@ -3,8 +3,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 
 import MagicDropzone from 'react-magic-dropzone';
 import models from '@cloud-annotations/models';
@@ -54,11 +54,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '2%',
     marginTop: '1%',
   },
-  button: {
-    marginTop: '5%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   blue: {
     color: '#fff',
     backgroundColor: '#0000FF',
@@ -70,7 +65,6 @@ const Report = (props) => {
   const [model, setModel] = useState(undefined);
   const [preview, setPreview] = useState(undefined);
   const [resultsCanvas, setResultsCanvas] = useState(undefined);
-  const [buttonAnalyse, setButtonAnalyse] = useState(false);
 
   const getRetinaContext = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -201,6 +195,10 @@ const Report = (props) => {
           type: 'SET_PREDICTION_LABEL',
           data: prediction.label,
         });
+        props.dispatch({
+          type: 'SET_SELECTED_IMAGE',
+          data: props.selectedImage + 1,
+        });
         // Draw the label background.
         ctx.setFillStyle('#0062ff');
         const textWidth = ctx.measureText(label).width;
@@ -278,74 +276,85 @@ const Report = (props) => {
   const images = importAll(require.context('../images', false, /\.(png|jpe?g|svg)$/));
 
   return (
-    <Card>
-      <Grid item xs={12} sm={12} md={12} lg={12}>
-        <div className={styles.wrapper}>
-          <MagicDropzone
-            className={styles.dropzone}
-            accept='image/jpeg, image/png, .jpg, .jpeg, .png'
-            multiple={false}
-            onDrop={onDrop}
-          >
-            {preview ? (
-              <div className={styles.imageWrapper}>
-                <img alt='upload preview' onLoad={onImageChange} className={styles.image} src={preview} />
-              </div>
-            ) : model !== undefined ? (
-              'Drag & Drop an Image to Test'
-            ) : (
-              'Loading model...'
-            )}
-            <canvas ref={setResultsCanvas} className={styles.canvas} />
-          </MagicDropzone>
-        </div>
-        {props.predictionLabel !== '' && (
-          <Grid container direction='column' className={classes.textGrid}>
-            <Grid container direction='row' style={{ justifyContent: 'flex-start', marginBottom: '20px' }}>
-              <Typography
-                variant='button'
-                style={{
-                  background: '#213065',
-                  color: '#fff',
-                  borderRadius: '5px',
-                  width: '180px',
-                  textAlign: 'center',
-                  marginRight: '10px',
-                  padding: '4px',
-                }}
-              >
-                {props.predictionLabel}
-              </Typography>
-              <Typography
-                variant='button'
-                style={{
-                  background: '#213065',
-                  color: '#fff',
-                  borderRadius: '5px',
-                  width: '180px',
-                  textAlign: 'center',
-                  padding: '4px',
-                }}
-              >
-                Unresolved
-              </Typography>
+    <>
+      <Card>
+        <Grid item xs={12} sm={12} md={12} lg={12}>
+          <div className={styles.wrapper}>
+            <MagicDropzone
+              className={styles.dropzone}
+              accept='image/jpeg, image/png, .jpg, .jpeg, .png'
+              multiple={false}
+              onDrop={onDrop}
+            >
+              {preview ? (
+                <div className={styles.imageWrapper}>
+                  <img alt='upload preview' onLoad={onImageChange} className={styles.image} src={preview} />
+                </div>
+              ) : model !== undefined ? (
+                'Drag & Drop an Image to Test'
+              ) : (
+                'Loading model...'
+              )}
+              <canvas ref={setResultsCanvas} className={styles.canvas} />
+            </MagicDropzone>
+          </div>
+          {props.predictionLabel !== '' && (
+            <Grid container direction='column' className={classes.textGrid}>
+              <Grid container direction='row' style={{ justifyContent: 'flex-start', marginBottom: '20px' }}>
+                <Typography
+                  variant='button'
+                  style={{
+                    background: '#213065',
+                    color: '#fff',
+                    borderRadius: '5px',
+                    width: '180px',
+                    textAlign: 'center',
+                    marginRight: '10px',
+                    padding: '4px',
+                  }}
+                >
+                  {props.predictionLabel}
+                </Typography>
+                <Typography
+                  variant='button'
+                  style={{
+                    background: '#213065',
+                    color: '#fff',
+                    borderRadius: '5px',
+                    width: '180px',
+                    textAlign: 'center',
+                    padding: '4px',
+                  }}
+                >
+                  Unresolved
+                </Typography>
+              </Grid>
+              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+                <Typography variant='h6'>Date</Typography>
+              </Grid>
+              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+                <Typography variant='body1'>Location</Typography>
+              </Grid>
+              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+                <TextField
+                  id='standard-full-width'
+                  name='foodItemName'
+                  fullWidth
+                  label='Food Item Name'
+                  helperText='Proper casing preferred e.g. Fried Rice'
+                  //value={foodItem.foodItemName}
+                  //onChange={(event) => setFoodItem({ ...foodItem, [event.target.name]: event.target.value })}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='h6'>Date</Typography>
-            </Grid>
-            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='body1'>Title</Typography>
-            </Grid>
-            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='body1'>Location</Typography>
-            </Grid>
-          </Grid>
-        )}
-      </Grid>
-    </Card>
+          )}
+        </Grid>
+      </Card>
+    </>
   );
 };
 const mapStateToProps = (state) => ({
   predictionLabel: state.reducer.predictionLabel,
+  selectedImage: state.reducer.selectedImage,
 });
 export default connect(mapStateToProps)(Report);
