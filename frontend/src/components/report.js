@@ -632,7 +632,7 @@ const Report = (props) => {
             }}
             color='primary'
           >
-            Save changes
+            Send Message
           </Button>
           <Button
             autoFocus
