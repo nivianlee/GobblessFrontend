@@ -12,6 +12,11 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Divider from '@material-ui/core/Divider';
+import Snackbar from '@material-ui/core/Snackbar';
+import AddAlert from '@material-ui/icons/AddAlert';
+
+import reports from '../data/reports.json';
 
 import MagicDropzone from 'react-magic-dropzone';
 import models from '@cloud-annotations/models';
@@ -82,6 +87,8 @@ const dialogStyles = (theme) => ({
 
 const Report = (props) => {
   const classes = useStyles();
+  const [notification, setNotification] = useState('');
+  const [bc, setBC] = useState(false);
   const [model, setModel] = useState(undefined);
   const [preview, setPreview] = useState(undefined);
   const [resultsCanvas, setResultsCanvas] = useState(undefined);
@@ -90,6 +97,20 @@ const Report = (props) => {
   const [openEm, setOpenEm] = useState(false);
   const [emMessage, setEmMessage] = useState('Accident at ');
   const [resolved, setResolved] = useState(false);
+  const [report, setReport] = useState({});
+
+  useEffect(() => {
+    console.log(reports[0]);
+    if (props.selectedImage === 2) {
+      setReport(reports[0]);
+    }
+    if (props.selectedImage === 3) {
+      setReport(reports[1]);
+    }
+    if (props.selectedImage === 4) {
+      setReport(reports[2]);
+    }
+  }, [props.selectedImage, props.predictionLabel]);
 
   const getRetinaContext = (canvas) => {
     const ctx = canvas.getContext('2d');
@@ -214,15 +235,11 @@ const Report = (props) => {
     predictions
       .filter((prediction) => prediction.score > 0.5)
       .forEach((prediction, i) => {
-        console.log(prediction.label);
-        const label = `${prediction.label} ${(prediction.score * 100).toFixed(1)}%`;
+        //const label = `${prediction.label} ${(prediction.score * 100).toFixed(1)}%`;
+        const label = 'Analysed';
         props.dispatch({
           type: 'SET_PREDICTION_LABEL',
           data: prediction.label,
-        });
-        props.dispatch({
-          type: 'SET_SELECTED_IMAGE',
-          data: props.selectedImage + 1,
         });
         // Draw the label background.
         ctx.setFillStyle('#0062ff');
@@ -265,6 +282,13 @@ const Report = (props) => {
       ctx.setHeight(0);
     }
   }, [model, resultsCanvas]); // if model changes kill preview.
+
+  useEffect(() => {
+    props.dispatch({
+      type: 'SET_SELECTED_IMAGE',
+      data: props.selectedImage + 1,
+    });
+  }, [props.predictionLabel]);
 
   const onDrop = useCallback((accepted, _, links) => {
     setPreview(accepted[0].preview || links[0]);
@@ -350,6 +374,13 @@ const Report = (props) => {
   const handleCloseResYes = () => {
     setOpenRes(false);
     setResolved(true);
+  };
+
+  const showNotification = () => {
+    setBC(true);
+    setTimeout(function () {
+      setBC(false);
+    }, 6000);
   };
 
   return (
@@ -442,10 +473,13 @@ const Report = (props) => {
               )}
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='h6'>Date</Typography>
+              <Typography variant='h6'>{report.date}</Typography>
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='body1'>Location</Typography>
+              <Typography variant='body1'>{report.location}</Typography>
+            </Grid>
+            <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+              <Divider />
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
               <TextField
@@ -457,8 +491,12 @@ const Report = (props) => {
                 value={emMessage}
                 onChange={(event) => setEmMessage(event.target.value)}
               />
-              <Button onClick={handleClickOpenEm} color='primary'>
-                Send message
+              <Button
+                variant='contained'
+                onClick={handleClickOpenEm}
+                style={{ marginTop: '20px', background: '#213065', color: '#fff' }}
+              >
+                Broadcast message
               </Button>
             </Grid>
           </Grid>
@@ -466,38 +504,40 @@ const Report = (props) => {
       </Grid>
       <Dialog onClose={handleCloseEm} aria-labelledby='customized-dialog-title' open={openEm}>
         <DialogTitle id='customized-dialog-title' onClose={handleCloseEm}>
-          Modal title
+          Broadcast Message
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget
-            quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet
-            rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl
-            consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+          <Typography gutterBottom>Click 'Send Message' to confirm broadcast message.</Typography>
+          <Typography gutterBottom variant='h6'>
+            {emMessage}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleCloseEm} color='primary'>
-            Cancel
-          </Button>
-          <Button autoFocus onClick={handleCloseEm} color='primary'>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleCloseEm();
+              setNotification('Message has been broadcasted');
+              showNotification();
+            }}
+            color='primary'
+          >
             Save changes
+          </Button>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleCloseEm();
+              setNotification('No message was broadcasted');
+              showNotification();
+            }}
+            color='primary'
+          >
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        fullWidth='sm'
-        maxWidth='sm'
-        onClose={handleCloseRes}
-        aria-labelledby='customized-dialog-title'
-        open={openRes}
-      >
+      <Dialog fullWidth onClose={handleCloseRes} aria-labelledby='customized-dialog-title' open={openRes}>
         <DialogTitle id='customized-dialog-title' onClose={handleCloseRes}>
           Resolve Report
         </DialogTitle>
@@ -513,6 +553,22 @@ const Report = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Grid container justify={'center'}>
+        <Grid item xs={12} sm={12} md={10} lg={8}>
+          <Grid container>
+            <Grid item xs={12} sm={12} md={4}>
+              <Snackbar
+                place='bc'
+                color='info'
+                icon={<AddAlert />}
+                message={notification}
+                open={bc}
+                onClose={() => setBC(false)}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </Card>
   );
 };
