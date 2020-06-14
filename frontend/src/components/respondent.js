@@ -81,6 +81,7 @@ const Respondent = (props) => {
     if (props.selectedImage === 4) {
       setRespMsgs(reports[2]);
     }
+    console.log(props.selectedImage);
   }, [props.selectedImage, props.predictionLabel]);
 
   return (
