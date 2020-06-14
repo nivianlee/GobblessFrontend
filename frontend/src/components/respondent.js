@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
 const Respondent = (props) => {
   const classes = useStyles();
   const [respMsgs, setRespMsgs] = useState([]);
+  const [displayMsgs, setDisplayMsgs] = useState([]);
+  const [incr, setIncr] = useState(0);
+  const [counter, setCounter] = useState(4);
 
   const importAll = (r) => {
     let images = {};
@@ -71,21 +74,77 @@ const Respondent = (props) => {
 
   const images = importAll(require.context('../images', false, /\.(png|jpe?g|svg)$/));
 
+  // useEffect(() => {
+  //   if (props.selectedImage === 2) {
+  //     setRespMsgs([...respMsgs, respondents[0][0]]);
+  //   }
+  //   if (props.selectedImage === 3) {
+  //     setRespMsgs([...respMsgs, respondents[1][0]]);
+  //   }
+  //   if (props.selectedImage === 4) {
+  //     setRespMsgs([...respMsgs, respondents[2][0]]);
+  //   }
+  // }, [props.selectedImage, props.predictionLabel]);
+
+  // useEffect(() => {
+  //   console.log('??');
+  //   console.log(props.selectedImage);
+  //   if (props.selectedImage === 1) {
+  //     setRespMsgs([...respMsgs, respondents[0][0]]);
+  //     for (let i = 1; i < respondents[0].length; i++) {
+  //       setInterval(() => setRespMsgs([...respMsgs, respondents[0][i]]), 3000);
+  //       console.log('here');
+  //     }
+  //     console.log('outside');
+  //   }
+  //   if (props.selectedImage === 2) {
+  //     setRespMsgs([...respMsgs, respondents[1][0]]);
+  //     for (let i = 1; i < respondents[0].length; i++) {
+  //       setInterval(() => setRespMsgs([...respMsgs, respondents[1][i]]), 3000);
+  //     }
+  //   }
+  //   if (props.selectedImage === 3) {
+  //     setRespMsgs([...respMsgs, respondents[2][0]]);
+  //     for (let i = 1; i < respondents[0].length; i++) {
+  //       setInterval(() => setRespMsgs([...respMsgs, respondents[2][i]]), 3000);
+  //     }
+  //   }
+  // }, [props.predictionLabel]);
+
   useEffect(() => {
+    if (counter > 0) {
+      if (props.selectedImage === 1) {
+        setRespMsgs([...respMsgs, respondents[0][incr]]);
+      }
+      if (props.selectedImage === 2) {
+        setRespMsgs([...respMsgs, respondents[1][incr]]);
+      }
+      if (props.selectedImage === 3) {
+        setRespMsgs([...respMsgs, respondents[2][incr]]);
+      }
+      setIncr(incr + 1);
+    }
+    const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 3000);
+    return () => clearInterval(timer);
+  }, [counter]);
+
+  useEffect(() => {
+    setCounter(4);
+    setIncr(1);
+    if (props.selectedImage === 1) {
+      setRespMsgs([respondents[0][0]]);
+    }
     if (props.selectedImage === 2) {
-      setRespMsgs(respondents[0]);
+      setRespMsgs([respondents[1][0]]);
     }
     if (props.selectedImage === 3) {
-      setRespMsgs(respondents[1]);
+      setRespMsgs([respondents[2][0]]);
     }
-    if (props.selectedImage === 4) {
-      setRespMsgs(respondents[2]);
-    }
-  }, [props.selectedImage, props.predictionLabel]);
+  }, [props.selectedImage]);
 
   return (
     <>
-      {props.selectedImage === 1 && (
+      {props.selectedImage === 0 && (
         <Typography variant='h6' className={classes.textResp}>
           No respondent messages
         </Typography>

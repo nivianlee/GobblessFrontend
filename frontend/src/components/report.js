@@ -117,14 +117,13 @@ const Report = (props) => {
   const [report, setReport] = useState({});
 
   useEffect(() => {
-    console.log(reports[0]);
-    if (props.selectedImage === 2) {
+    if (props.selectedImage === 1) {
       setReport(reports[0]);
     }
-    if (props.selectedImage === 3) {
+    if (props.selectedImage === 2) {
       setReport(reports[1]);
     }
-    if (props.selectedImage === 4) {
+    if (props.selectedImage === 3) {
       setReport(reports[2]);
     }
   }, [props.selectedImage, props.predictionLabel]);
@@ -254,10 +253,14 @@ const Report = (props) => {
       .forEach((prediction, i) => {
         //const label = `${prediction.label} ${(prediction.score * 100).toFixed(1)}%`;
         const label = 'Analysed';
-        props.dispatch({
-          type: 'SET_PREDICTION_LABEL',
-          data: prediction.label,
-        });
+        console.log(prediction.label);
+        if (prediction.label !== '') {
+          props.dispatch({
+            type: 'SET_PREDICTION_LABEL',
+            data: prediction.label,
+          });
+        }
+
         // Draw the label background.
         ctx.setFillStyle('#0062ff');
         const textWidth = ctx.measureText(label).width;
@@ -301,10 +304,12 @@ const Report = (props) => {
   }, [model, resultsCanvas]); // if model changes kill preview.
 
   useEffect(() => {
-    props.dispatch({
-      type: 'SET_SELECTED_IMAGE',
-      data: props.selectedImage + 1,
-    });
+    if (props.predictionLabel !== '') {
+      props.dispatch({
+        type: 'SET_SELECTED_IMAGE',
+        data: props.selectedImage + 1,
+      });
+    }
   }, [props.predictionLabel]);
 
   const onDrop = useCallback((accepted, _, links) => {
@@ -410,6 +415,7 @@ const Report = (props) => {
       data: event.target.value,
     });
   };
+
   const showNotification = () => {
     setBC(true);
     setTimeout(function () {
@@ -432,7 +438,7 @@ const Report = (props) => {
                 <img alt='upload preview' onLoad={onImageChange} className={styles.image} src={preview} />
               </div>
             ) : model !== undefined ? (
-              'Drag & Drop an Image to Test'
+              'Drag and drop an image to test'
             ) : (
               'Loading model...'
             )}
@@ -452,7 +458,6 @@ const Report = (props) => {
                     width: '180px',
                     textAlign: 'center',
                     marginRight: '10px',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenAcc()}
                 >
@@ -468,7 +473,6 @@ const Report = (props) => {
                     width: '180px',
                     textAlign: 'center',
                     marginRight: '10px',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenAcc()}
                 >
@@ -484,7 +488,6 @@ const Report = (props) => {
                     borderRadius: '5px',
                     width: '180px',
                     textAlign: 'center',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenRes()}
                   disabled={true}
@@ -500,7 +503,6 @@ const Report = (props) => {
                     borderRadius: '5px',
                     width: '180px',
                     textAlign: 'center',
-                    padding: '4px',
                   }}
                   onClick={() => handleClickOpenRes()}
                 >
@@ -509,30 +511,23 @@ const Report = (props) => {
               )}
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='h6'>{report.date}</Typography>
+              <Typography variant='h6'>Date: {report.date}</Typography>
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
-              <Typography variant='body1'>{report.location}</Typography>
+              <Typography variant='body1'>Location: {report.location}</Typography>
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
               <Divider />
             </Grid>
             <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+              <Grid item xs={11} sm={11} md={11} lg={11} className={classes.textInput}>
+                <Typography variant='h6'>Emergency Message</Typography>
+              </Grid>
               <TextField
                 id='standard-full-width'
                 name='Emergency Message'
                 fullWidth
-                label='Emergency Message'
-                InputProps={{
-                  classes: { root: classes.inputRoot },
-                }}
-                InputLabelProps={{
-                  classes: {
-                    root: classes.labelRoot,
-                    focused: classes.labelFocused,
-                  },
-                }}
-                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a, avoid Lane 4'
+                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a Lane 4'
                 value={emMessage}
                 onChange={(event) => setEmMessage(event.target.value)}
               />
@@ -549,7 +544,7 @@ const Report = (props) => {
       </Grid>
       {accident ? (
         <Dialog
-          fullWidth='sm'
+          fullWidth
           maxWidth='sm'
           onClose={handleCloseAcc}
           aria-labelledby='customized-dialog-title'
@@ -579,7 +574,7 @@ const Report = (props) => {
         </Dialog>
       ) : (
         <Dialog
-          fullWidth='sm'
+          fullWidth
           maxWidth='sm'
           onClose={handleCloseRes}
           aria-labelledby='customized-dialog-title'
@@ -592,10 +587,26 @@ const Report = (props) => {
             <Typography gutterBottom> Has this report been resolved? </Typography>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleCloseResYes} color='primary'>
+            <Button
+              autoFocus
+              onClick={() => {
+                handleCloseResYes();
+                setNotification('Success! Report has been updated to resolved');
+                showNotification();
+              }}
+              color='primary'
+            >
               Yes
             </Button>
-            <Button autoFocus onClick={handleCloseRes} color='primary'>
+            <Button
+              autoFocus
+              onClick={() => {
+                handleCloseRes();
+                setNotification('Cancelled. Report remains unresolved');
+                showNotification();
+              }}
+              color='primary'
+            >
               No
             </Button>
           </DialogActions>
@@ -644,10 +655,26 @@ const Report = (props) => {
           <Typography gutterBottom> Has this report been resolved? </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleCloseResYes} color='primary'>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleCloseResYes();
+              setNotification('Success! Report has been updated to resolved');
+              showNotification();
+            }}
+            color='primary'
+          >
             Yes
           </Button>
-          <Button autoFocus onClick={handleCloseRes} color='primary'>
+          <Button
+            autoFocus
+            onClick={() => {
+              handleCloseRes();
+              setNotification('Cancelled. Report remains unresolved');
+              showNotification();
+            }}
+            color='primary'
+          >
             No
           </Button>
         </DialogActions>
