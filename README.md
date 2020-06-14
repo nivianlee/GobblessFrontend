@@ -13,6 +13,7 @@ We look to address the third problem statement – integrating with a smart envi
 3. To flag to SCDF and activate emergency resources such as ambulances only when a major traffic accident occurs. 
 
 ### Pitch Video
+https://youtu.be/2ViZ-mP0yDQ
 
 ### Architecture of the Proposed Solution
 
@@ -21,7 +22,8 @@ https://docs.google.com/document/d/1cRGRzNGBly48C97SJTVLKkjmCJCdCCC8caF56TT-8L4/
 
 ### Getting Started
 1. Clone the repo into your local.
-2. Run npm i in the directory containing package.json
+2. cd into the `frontend` directory.
+3. Run `yarn`.
 
 ### Live Demo
 
