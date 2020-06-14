@@ -1,113 +1,14 @@
 [
-  [
-    {
-      "name": "Jefferson Sie",
-      "date": "June 13th 2020, 9:49:04 pm",
-      "contactNum": "90051543",
-      "image": "01",
-      "text": "Car crashed into the shelter"
-    },
-    {
-      "name": "Xiao Ming",
-      "date": "June 13 th 2020, 9:51:10 pm",
-      "contactNum": "91025314",
-      "image": "",
-      "text": "Car drive into the pavement sia"
-    },
-    {
-      "name": "Tan Ah Kow",
-      "date": "June 13 th 2020, 9:55:60 pm",
-      "contactNum": "84140912",
-      "image": "",
-      "text": "Wah siao liao the car flip sia.Cfm kena fined by pap one."
-    },
-    {
-      "name": "Michael Coxlong",
-      "date": "June 13 th 2020, 10:00:31 pm",
-      "contactNum": "90131234",
-      "image": "02",
-      "text": "Dang mate the taxi drove another car into the building.A real bloody mess. This is Michael Coxlong."
-    },
-    {
-      "name": "Dill Doe",
-      "date": "June 13 th 2020, 10:05:51 pm",
-      "contactNum": "86019341",
-      "image": "",
-      "text": "Car flipped"
-    }
-  ],
-  [
-    {
-      "name": "Boon Ping",
-      "date": "June 14 th 2020, 3:15:24 pm",
-      "contactNum": "90127845",
-      "image": "",
-      "text": "Sian small crash only but traffic still so jam"
-    },
-    {
-      "name": "Yue Qi",
-      "date": "June 14 th 2020, 3:15:56 pm",
-      "contactNum": "91232121",
-      "image": "03",
-      "text": "All the best gobbless"
-    },
-    {
-      "name": "Zul",
-      "date": "June 14 th 2020, 3:16:10 pm",
-      "contactNum": "87731557",
-      "image": "",
-      "text": "Just a small accident, no injuries"
-    },
-    {
-      "name": "Monica Cheng",
-      "date": "June 14 th 2020, 3:17:03 pm",
-      "contactNum": "96546623",
-      "image": "",
-      "text": "Aiyo I stomach ache but stuck in traffic because of this"
-    },
-    {
-      "name": "Ahan P.Gupta",
-      "date": "June 14 th 2020, 3:17:09 pm",
-      "contactNum": "81157773",
-      "image": "",
-      "text": "I should be studying..."
-    }
-  ],
-  [
-    {
-      "name": "Bee Hwa",
-      "date": "June 20 th 2020, 5:15:21 pm",
-      "contactNum": "87731557",
-      "image": "04",
-      "text": "A double - decker bus ploughed into the kerb and knocked over the traffic light, there are multiple passengers trapped inside and possibly injured "
-    },
-    {
-      "name": "Zhen Jia Lat",
-      "date": "June 20 th 2020, 5:15:21 pm",
-      "contactNum": "98762344",
-      "image": "05",
-      "text": "A blue taxi was involved, the taxi swerved to avoid the incoming bus and ended by crashing into a traffic light.The bonnet is damaged and the cabby is seems unconscious."
-    },
-    {
-      "name": "Kua See Mi",
-      "date": "June 20 th 2020, 5:15:21 pm",
-      "contactNum": "88467207",
-      "image": "",
-      "text": "I saw everything, it was really bad! Please come quickly!"
-    },
-    {
-      "name": "Aunn Tee, Karen",
-      "date": "June 20 th 2020, 5:15:21 pm",
-      "contactNum": "84961452",
-      "image": "",
-      "text": "Luckily no pedestrians were waiting at the traffic light, but it seems the bus has passengers who are in distress."
-    },
-    {
-      "name": "Andy Chan",
-      "date": "June 20 th 2020, 5:15:21 pm",
-      "contactNum": "87232845",
-      "image": "",
-      "text": "A bus and a taxi nearly crashed into each other head - on but thankfully both vehicles swerved out of the way and no pedestrains were hurt."
-    }
-  ]
+  {
+    "date": "June 13th 2020, 9:49:00 pm",
+    "location": "200 Lor 2 Toa Payoh, Singapore 319642"
+  },
+  {
+    "date": "June 14th 2020, 3:15:20 pm",
+    "location": "1 Robinson Rd, AIA Tower, Singapore 048542"
+  },
+  {
+    "date": "June 20th 2020, 5:15:20 pm",
+    "location": "3 Yio Chu Kang Road, Singapore 805947"
+  }
 ]

@@ -3,7 +3,7 @@ export function reducer(
     errorMessage: '',
     notifMessage: '',
     predictionLabel: '',
-    selectedImage: 1,
+    selectedImage: 0,
   },
   action
 ) {

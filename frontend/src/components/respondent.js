@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 
-import reports from '../data/reports.json';
+import respondents from '../data/respondents.json';
 
 import { connect } from 'react-redux';
 
@@ -73,13 +73,13 @@ const Respondent = (props) => {
 
   useEffect(() => {
     if (props.selectedImage === 2) {
-      setRespMsgs(reports[0]);
+      setRespMsgs(respondents[0]);
     }
     if (props.selectedImage === 3) {
-      setRespMsgs(reports[1]);
+      setRespMsgs(respondents[1]);
     }
     if (props.selectedImage === 4) {
-      setRespMsgs(reports[2]);
+      setRespMsgs(respondents[2]);
     }
   }, [props.selectedImage, props.predictionLabel]);
 
@@ -115,7 +115,7 @@ const Respondent = (props) => {
                   <CardMedia
                     component='img'
                     className={classes.media}
-                    title={'02.jpg'}
+                    title={`${msg.image}.jpg`}
                     image={images[`${msg.image}.jpg`]}
                     style={{ height: '400px' }}
                   />

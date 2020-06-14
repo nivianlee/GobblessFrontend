@@ -67,12 +67,6 @@ const Sidebar = (props) => {
           </ListItemIcon>
           <ListItemText primary={'Current'} />
         </ListItem>
-        <ListItem button onClick={(event) => handleSelectedItem(event, 1)} selected={selectedItem === 1}>
-          <ListItemIcon>
-            <AccessTimeIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Past'} />
-        </ListItem>
       </List>
     </div>
   );
