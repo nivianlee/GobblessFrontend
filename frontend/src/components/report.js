@@ -527,7 +527,7 @@ const Report = (props) => {
                 id='standard-full-width'
                 name='Emergency Message'
                 fullWidth
-                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a Lane 4'
+                helperText='Broadcast to drivers and passengers near accidents e.g. Accident at AYE near Exit 9a, avoid Lane 4'
                 value={emMessage}
                 onChange={(event) => setEmMessage(event.target.value)}
               />
