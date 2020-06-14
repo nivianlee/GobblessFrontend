@@ -143,7 +143,7 @@ const Respondent = (props) => {
   }, [props.selectedImage]);
 
   return (
-    <>
+    <div style={{overflow:"auto", height: 1000}}>
       {props.selectedImage === 0 && (
         <Typography variant='h6' className={classes.textResp}>
           No respondent messages
@@ -184,7 +184,7 @@ const Respondent = (props) => {
           </Grid>
         </Card>
       ))}
-    </>
+    </div>
   );
 };
 
